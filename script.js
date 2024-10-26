@@ -45,7 +45,7 @@ const products = [
 { category: "kothi", name: "Pushpa2 Color kothi", price:180, imageUrl: "products/kothi/pushpa.jpg" },
 { category: "kothi", name: "King Color Jumbo-kothi", price:200, imageUrl: "products/kothi/kingjumbo.jpg" },
 { category: "kothi", name: "azad Little Flowerpots", price:240, imageUrl: "products/kothi/matlakothi.jpg" },
-{ category: "kothi", name: "azad Anarkali Flowerpots", price:260, imageUrl: "products/kothi/anakali.jpg" },
+{ category: "kothi", name: "azad Anarkali Flowerpots", price:260, imageUrl: "products/kothi/anarkali.jpg" },
 { category: "kothi", name: "Aryan Color kothi Delux", price:250, imageUrl: "products/kothi/aryandelux.jpg" },
 { category: "kothi", name: "Anjali Multi- Clr-kothi 15pcs", price:350, imageUrl: "products/kothi/anjali.jpg" },
 
