@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+</head>
+
+<body class="bg-gray-200 min-h-screen flex flex-col items-center justify-center font-['Montserrat'] ">
+
+  <!--modal-->
+  <div id="profileModal" class="fixed hidden inset-0 flex items-center justify-center bg-gray-500 bg-opacity-60 px-5 z-10 ">
+    <div class="modal-content bg-white px-5 py-5 shadow rounded-md w-96 relative">
+      <span id="closeModal" class="mr-1 cursor-pointer absolute top-2 right-2 text-gray-600 hover:text-gray-900">X</span>
+      <p class="text-base font-bold ">Profile</p>
+      
+      <div class="flex gap-5 py-5">
+        <div class="w-24 h-24 bg-gray-300 rounded-full outline outline-gray-300"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-24 h-24 mt-3 overflow-hidden" fill="white"><path d="M20 22H4V20C4 17.2386 6.23858 15 9 15H15C17.7614 15 20 17.2386 20 20V22ZM12 13C8.68629 13 6 10.3137 6 7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7C18 10.3137 15.3137 13 12 13Z"></path></svg>
+        </div>
+        
+       <div>
+      <h3 class="username font-bold max-w-[200px] font-wrap text-lg mb-2 break-words"></h3>
+
+          <button id="signoutBtn" class="signoutbtn bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600 transition duration-200">
+          Sign Out
+          </button>
+        
+      </div>
+    </div>
+    
+     <!-- Sign Out Button -->
+    
+
+      <!-- Contact Me Section -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-2">Contact Me</h2>
+        <p class="text-gray-700">Email: <a href="mailto:999rajivmishra@gmail.com" class="text-blue-500 underline">Send an Email</a></p>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Feedback</h2>
+        <form id="feedbackForm">
+          <textarea class="feedbackTextArea w-full border border-gray-300 rounded p-2 mb-4" placeholder="Your feedback..." required></textarea>
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">
+            Submit Feedback
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Summary Heading -->
+  <h1 class="text-3xl font-bold text-gray-800 mb-3 mt-5">All History</h1>
+
+  <div class="container mx-auto px-4 py-8">
+    <div id="orderList" class="space-y-6">
+
+    </div>
+    <div class="flex justify-center mt-10 mb-10"><button class="clearAll px-6 py-3 bg-gray-700 text-white rounded-md" type="button">Clear All</button></div>
+  </div>
+
+
+  <!--stickeybotton-->
+  <div class="fixed bottom-0 h-[55px] w-full bg-white py-2 shadow">
+    <div class="flex gap-2 justify-between items-center max-w-[650px] px-10 mx-auto">
+      <div id="profileIcon" class="settingPage">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-10" viewBox="0 0 24 24" id="Single-Neutral-Circle--Streamline-Ultimate" height="24" width="24">
+          <desc>Single Neutral Circle Streamline Icon: https://streamlinehq.com</desc>
+          <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M0.75 12c0 2.9837 1.18526 5.8452 3.29505 7.955C6.15483 22.0647 9.01631 23.25 12 23.25c2.9837 0 5.8452 -1.1853 7.955 -3.295 2.1097 -2.1098 3.295 -4.9713 3.295 -7.955 0 -2.98369 -1.1853 -5.84517 -3.295 -7.95495C17.8452 1.93526 14.9837 0.75 12 0.75c-2.98369 0 -5.84517 1.18526 -7.95495 3.29505C1.93526 6.15483 0.75 9.01631 0.75 12Z" stroke-width="1.5"></path>
+          <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M9.75 6c0 0.59674 0.23705 1.16903 0.659 1.59099 0.422 0.42196 0.9943 0.65901 1.591 0.65901s1.169 -0.23705 1.591 -0.65901c0.4219 -0.42196 0.659 -0.99425 0.659 -1.59099 0 -0.59674 -0.2371 -1.16903 -0.659 -1.59099C13.169 3.98705 12.5967 3.75 12 3.75s-1.169 0.23705 -1.591 0.65901C9.98705 4.83097 9.75 5.40326 9.75 6Z" stroke-width="1.5"></path>
+          <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="m13.5 20.25 0.75 -4.5h1.5V13.5c0 -0.9946 -0.3951 -1.9484 -1.0983 -2.6517C13.9484 10.1451 12.9946 9.75 12 9.75c-0.9946 0 -1.9484 0.3951 -2.65165 1.0983C8.64509 11.5516 8.25 12.5054 8.25 13.5v2.25h1.5l0.75 4.5h3Z" stroke-width="1.5"></path>
+        </svg>
+      </div>
+      <div class="homePage">
+        <a href="home.html">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10" fill="none" viewBox="0 0 24 24" id="House-1--Streamline-Ultimate" height="24" width="24">
+            <desc>House 1 Streamline Icon: https://streamlinehq.com</desc>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M3.75299 13.944v8.25h6v-6c0 -0.3979 0.15804 -0.7794 0.43931 -1.0607 0.2813 -0.2813 0.6629 -0.4393 1.0607 -0.4393h1.5c0.3978 0 0.7793 0.158 1.0607 0.4393 0.2813 0.2813 0.4393 0.6628 0.4393 1.0607v6h6v-8.25" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M0.752991 12.444 10.942 2.25499c0.1393 -0.13939 0.3047 -0.24997 0.4867 -0.32541 0.1821 -0.07544 0.3772 -0.11427 0.5743 -0.11427 0.1971 0 0.3922 0.03883 0.5742 0.11427 0.1821 0.07544 0.3475 0.18602 0.4868 0.32541L23.253 12.444" stroke-width="1.5"></path>
+          </svg></a>
+      </div>
+      <div class="historyPage">
+        <a disabled href="">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="gray" class="w-10" viewBox="0 0 24 24" id="Notes-Checklist-Flip--Streamline-Ultimate" height="24" width="24">
+            <desc>Notes Checklist Flip Streamline Icon: https://streamlinehq.com</desc>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M2.25 2.25h19.5s1.5 0 1.5 1.5v18s0 1.5 -1.5 1.5H2.25s-1.5 0 -1.5 -1.5v-18s0 -1.5 1.5 -1.5Z" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M5.25 0.75v3" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M18.75 0.75v3" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M12.75 18h4.5" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M12.75 10.5h4.5" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="m9.9 15.3 -3.15 4.2 -2.25 -2.25" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="m9.9 7.5 -3.15 4.2L4.5 9.45" stroke-width="1.5"></path>
+          </svg></a>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script>
+  
+  // Function to load orders dynamically
+  function loadOrders() {
+    const storedOrders = localStorage.getItem("orders");
+    
+    // Check if any orders exist
+    if (storedOrders) {
+      const orderList = document.getElementById('orderList');
+      const orders = JSON.parse(storedOrders);
+      let qrcodesArray =[]
+      orders.forEach((order, index) => {
+        qrcodesArray.push(order.finalAmount)
+        const items = Array.isArray(order.totalitems) ? order.totalitems : []; // Ensure it's an array
+        
+        const paymentStatus = "pending";
+        
+        const orderHTML = `
+          <div class="bg-white shadow-lg rounded-lg p-6 border border-gray-200 relative">
+            <div class="w-28 h-32 absolute right-10 top-50 mt-7">
+              <div class=" ml-5 qrdiv w-28 h-28  mx-auto"></div>
+              <p class="text-end text-sm text-gray-500">pay now</p>
+            </div>
+            <div class="orderItem">
+              <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-semibold text-gray-700">Order #${index + 1}</h2>
+                <span class="text-xs text-gray-500">${order.date} - ${order.time}</span>
+              </div>
+              <div class="text-sm text-gray-600 mb-4">
+                <p class="py-1"><strong>Name:</strong> ${order.name}</p>
+                <p class="py-1"><strong>Email:</strong> ${order.email}</p>
+                <p class="py-1"><strong>Phone:</strong> ${order.phone}</p>
+                <p class="py-1"><strong>Payment Status:</strong> ${paymentStatus}</p>
+              </div>
+              <div class="text-sm text-gray-600 mt-2">
+                <h3 class="font-semibold text-gray-700 mb-2">Items:</h3>
+                <ul class="space-y-1">
+                  ${items.map(item => `
+                    <li class="flex justify-between">
+                      <span>${item.product}  -- (x${item.quantity})</span>
+                      <span>₹${item.totalPrice}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+              <div class="flex justify-between items-center mt-4">
+                <span class="font-semibold text-gray-700">Total Quantity: ${order.totalQuantity}</span>
+                <span class="text-xl font-bold text-green-700">₹${order.finalAmount}</span>
+              </div>
+            </div>
+            <!-- Button Container -->
+            <div class="flex justify-center mt-4 gap-4">
+              <button class="downloadbtn bg-red-500 text-white px-2 py-1 rounded-md">Download Pdf</button>
+            </div>
+          </div>
+        `;
+
+        // Append the order HTML to the order list
+        orderList.insertAdjacentHTML('beforeend', orderHTML);
+});
+
+  const qrdivs = document.querySelectorAll('.qrdiv')
+    i = 0
+    qrdivs.forEach(item =>{
+    const url = `upi://pay?pa=9998487424@pthdfc&pn=YourNameHere&am=${qrcodesArray[i++]}&tn=Payment for Services&cu=INR`
+    $(item).qrcode({
+      text:url,
+      width : 110,
+      height : 110
+    })
+})
+
+
+
+    }
+  }
+
+  // Call function to load orders when page loads
+  loadOrders();
+  
+  
+  /*
+    // Function to load orders dynamically
+    function loadOrders() {
+      const storedOrders = localStorage.getItem("orders");
+
+      // Check if any orders exist
+      if (storedOrders) {
+        const orderList = document.getElementById('orderList');
+        const orders = JSON.parse(storedOrders);
+
+        orders.forEach((order, index) => {
+          const items = Array.isArray(order.totalitems) ? order.totalitems : []; // Ensure it's an array
+        const paymentUrl = `upi://pay?pa=vs322000-2@okaxis&pn=YourNameHere&am=1&tn=Payment for Services&cu=INR`;
+         const paymentStatus = "pending"
+          const orderHTML = `
+            <div class="bg-white shadow-lg rounded-lg p-6 border border-gray-200 reltive">
+             <div class="w-28 h-32 absolute right-10 top-50 mt-7">
+             <div class="qrdiv w-28 h-28 bg-gray-300 mx-auto"></div>
+             <p class="text-end text-sm text-gray-500">pay now</p>
+             </div>
+            
+            <div class="orderItem">
+              <div class=" flex justify-between items-center mb-2">
+                <h2 class="text-lg font-semibold text-gray-700">Order #${index + 1}</h2>
+           <span class="text-xs text-gray-500">${order.date} - ${order.time}</span>
+ 
+              </div>
+
+              <div class="text-sm text-gray-600 mb-4">
+
+                <p class="py-1"><strong>Name:</strong> ${order.name}</p>
+                <p class="py-1"><strong>Email:</strong> ${order.email}</p>
+                <p class="py-1"><strong>Phone:</strong> ${order.phone}</p>
+               <p class="py-1"><strong>payment status :</strong> ${paymentStatus}</p>
+              </div>
+              <div class="text-sm text-gray-600 mt-2">
+                <h3 class="font-semibold text-gray-700 mb-2">Items:</h3>
+                <ul class="space-y-1">
+                  ${items.map(item => `
+                    <li class="flex justify-between">
+                      <span>${item.product}  -- (x${item.quantity})</span>
+                      <span>₹${item.totalPrice}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+              <div class="flex justify-between items-center mt-4">
+                <span class="font-semibold text-gray-700">Total Quantity: ${order.totalQuantity}</span>
+                <span class="text-xl font-bold text-green-700">₹${order.finalAmount}</span>
+              </div>
+            </div>
+              <!-- Button Container -->
+              <div class="flex justify-center mt-4 gap-4">
+                <button class="downloadbtn bg-red-500 text-white px-2  py-1 rounded-md">Download Pdf</button>
+              </div>
+            </div>
+          `;
+     
+     
+    orderList.innerHTML = orderHTML + orderList.innerHTML;
+   orderList.insertAdjacentHTML('beforeend', orderHTML);
+
+    // Step 3: Generate the QR code after appending the HTML
+    const qrDiv = document.querySelector('.qrdiv');
+    new QRCode(qrDiv, {
+        text: paymentUrl,
+        width: 128,   // Specify the desired width of the QR code
+        height: 128,  // Specify the desired height of the QR code
+    });
+  
+        });
+      }
+    }
+
+    // Call function to load orders when page loads
+    loadOrders(); */
+
+    document.querySelector('#orderList').addEventListener("click", async (e) => {
+      if (e.target.classList.contains("downloadbtn")) {
+        const element = e.target.parentElement.parentElement.querySelector('.orderItem');
+
+        // Create a new div element to hold the header, content, and footer
+        const pdfContent = document.createElement('div');
+
+        // Define your header and footer with inline styles
+        const headerStyle = "font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px;";
+        const footerStyle = "font-size: 12px; text-align: center; margin-top: 20px;";
+
+        const headerText = `<h3 style="${headerStyle}">Welcome to Bill.EZ</h3>`;
+        const footerText = `<p style="${footerStyle}">Thank you for your business!</p>`;
+
+        // Add header, content, and footer to the new div
+        pdfContent.innerHTML = `
+            <div style="padding: 16px;">
+                ${headerText}
+                <div style="margin-bottom: 20px;">${element.innerHTML}</div>
+                ${footerText}
+            </div>
+        `;
+
+        try {
+          const opt = {
+            margin: 10, // Set margin to 0 to manage header/footer placement
+            filename: 'document.pdf',
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 3 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
+
+          // Generate the PDF
+          html2pdf().from(pdfContent).set(opt).save();
+        } catch (error) {
+          console.error("Error generating PDF:", error);
+        }
+      }
+    });
+
+
+
+
+    document.querySelector('.clearAll').addEventListener("click", () => {
+      localStorage.removeItem("orders")
+      document.querySelector('#orderList').innerHTML = "";
+      dynamicClearBtn()
+    })
+
+    function dynamicClearBtn() {
+      if (!localStorage.orders) {
+        document.querySelector('.clearAll').style.display = "none";
+      }
+    }
+    dynamicClearBtn()
+
+    const profileIcon = document.getElementById('profileIcon');
+    const profileModal = document.getElementById('profileModal');
+    const closeModal = document.getElementById('closeModal');
+
+    // Open Modal
+    profileIcon.addEventListener('click', () => {
+      profileModal.style.display = 'flex';
+    });
+
+    // Close Modal
+    closeModal.addEventListener('click', () => {
+      profileModal.style.display = 'none';
+    });
+
+    document.querySelector('.username').innerHTML = localStorage.userEmail;
+
+
+
+
+    
+    
+    
+  document.getElementById('feedbackForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const feedback = document.querySelector('.feedbackTextArea').value;
+            console.log('Feedback submitted:', feedback);
+            alert('Thank you for your feedback!');
+            profileModal.style.display = 'none';
+
+        });
+  </script>
+  
+  <<script type="module">
+    import { app, auth, signOut } from "./firebase.js";
+    import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+
+
+
+
+    //db
+    const db = getDatabase(app, "https://diwali-shop-default-rtdb.asia-southeast1.firebasedatabase.app");
+
+    const signoutbtn = document.querySelector('.signoutbtn');
+    const usersignout = async () => {
+    try {
+    await signOut(auth);
+    window.location.href = "index.html";
+    } catch (error) {
+    console.error("Sign-out error:", error);
+    }
+    };
+    
+        //orders 
+    const getOrders = async () => {
+      const ordersListContainer = document.getElementById('ordersList'); // Reference to the DOM container
+      const user = auth.currentUser; // Get the current user
+
+      if (user) {
+        const ordersRef = ref(db, `users/${user.uid}/orders`); // Reference to the user's orders
+
+        try {
+          const snapshot = await get(ordersRef);
+          if (snapshot.exists()) {
+            console.log(snapshot.val())
+            const orders = snapshot.val();
+            ordersListContainer.innerHTML = ''; // Clear existing content
+
+            // Iterate over the orders and create DOM elements
+            Object.keys(orders).forEach(orderKey => {
+              const order = orders[orderKey]; // Access the order entry
+
+              // Create a div to hold the order details
+              const orderDiv = document.createElement('div');
+              orderDiv.classList.add('order-card', 'p-4', 'mb-4', 'bg-gray-100', 'rounded-lg', 'shadow');
+
+              // Set the inner HTML of the orderDiv
+              orderDiv.innerHTML = `
+            <h3 class="text-lg font-semibold mb-2">Order from ${order.date} at ${order.time}</h3>
+            <p><strong>Name:</strong> ${order.name}</p>
+            <p><strong>Phone:</strong> ${order.phone}</p>
+            <p><strong>Email:</strong> ${order.email}</p>
+            <p><strong>Total Amount:</strong> $${order.finalAmount}</p>
+            <p><strong>Total Quantity:</strong> ${order.totalQuantity} items</p>
+            <h4 class="font-bold">Items:</h4>
+            <ul class="list-disc pl-4">
+              ${order.totalitems.map(item => `<li>${item.product} - ${item.quantity} x $${item.price} = $${item.totalPrice}</li>`).join('')}
+            </ul>
+          `;
+
+              // Append the orderDiv to the ordersListContainer
+              ordersListContainer.appendChild(orderDiv);
+            });
+          } else {
+            ordersListContainer.innerHTML = '<p>No orders found.</p>'; // Show message if no orders exist
+          }
+        } catch (error) {
+          console.error("Error fetching orders:", error);
+        }
+      } else {
+        console.log("No user signed in.");
+      }
+    };
+
+
+    //eventlistners
+    signoutbtn.addEventListener("click", usersignout);
+    </script>
+
+
+
+</body>
+
+</html>
