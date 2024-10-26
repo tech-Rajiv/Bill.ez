@@ -41,12 +41,13 @@ const products = [
 { category: "kothi", name: "Flower pot Big", price:70, imageUrl: "products/kothi/bigpot.jpg" },
 { category: "kothi", name: "5g Gain color kothi", price:120, imageUrl: "products/kothi/5g.jpg" },
 { category: "kothi", name: "jay Ambe Color kothi", price:150, imageUrl: "products/kothi/colorkothi.jpg" },
-{ category: "kothi", name: "azad Little Flowerpots", price:200, imageUrl: "products/kothi/matlakothi.jpg" },
 { category: "kothi", name: "Standard Color kothi", price:180, imageUrl: "products/kothi/standard.jpg" },
 { category: "kothi", name: "Pushpa2 Color kothi", price:180, imageUrl: "products/kothi/pushpa.jpg" },
 { category: "kothi", name: "King Color Jumbo-kothi", price:200, imageUrl: "products/kothi/kingjumbo.jpg" },
+{ category: "kothi", name: "azad Little Flowerpots", price:240, imageUrl: "products/kothi/matlakothi.jpg" },
+{ category: "kothi", name: "azad Anarkali Flowerpots", price:260, imageUrl: "products/kothi/anakali.jpg" },
 { category: "kothi", name: "Aryan Color kothi Delux", price:250, imageUrl: "products/kothi/aryandelux.jpg" },
-{ category: "kothi", name: "Anjali Multi- Clr-kothi 15pcs", price:300, imageUrl: "products/kothi/anjali.jpg" },
+{ category: "kothi", name: "Anjali Multi- Clr-kothi 15pcs", price:350, imageUrl: "products/kothi/anjali.jpg" },
 
 //shorts
 { category: "shots", name: "Hindustan, 3G 3 shots ", price:300, imageUrl: "products/shots/hindustan.jpg" },
@@ -65,8 +66,8 @@ const products = [
 {category: "laar", name: "BIJLI big", price:30, imageUrl: "products/laar/bijlib.jpg"},
 {category: "laar", name: "2Sound Coronataion Gaint", price:50, imageUrl: "products/laar/30.jpg"},
 {category: "laar", name: "Golden Hulk, delux eagle", price:60, imageUrl: "products/laar/60.jpg"},
-{category: "laar", name: "Madagasacar Delux", price:100, imageUrl: "products/laar/mada.jpg"},
-{category: "laar", name: "Aladin 40 Delux", price:100, imageUrl: "products/laar/aladin.jpg"},
+{category: "laar", name: "Madagasacar Delux", price:200, imageUrl: "products/laar/mada.jpg"},
+{category: "laar", name: "Aladin 40 Delux", price:250, imageUrl: "products/laar/aladin.jpg"},
 
 
 
