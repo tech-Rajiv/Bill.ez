@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+  <style>
+    .previewSection::-webkit-scrollbar {
+      display: none;
+    }
+
+    .previewSection {
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+    }
+  </style>
+</head>
+
+<body class=" font-['Montserrat']">
+  <section class=" container mx-auto ">
+
+
+
+    <!--price sticky--->
+    <section class="w-full bg-white sticky top-0 z-10 py-5 shadow shadow-md">
+      <div class="flex items-center justify-between px-6 max-w-[650px] mx-auto">
+        <div>
+          <span class="text-gray-600 text-base">Quantity : </span><span class="quantityDiv text-lg text-gray-800 px-2">0</span>
+        </div>
+        <div class="flex">
+          <h2 class="displayFinalPrice text-2xl text-green-700 font-extrabold px-2">0</h2>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="25px" fill="gray">
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM13.5003 8C13.8278 8.43606 14.0625 8.94584 14.175 9.5H16V11H14.175C13.8275 12.7117 12.3142 14 10.5 14H10.3107L14.0303 17.7197L12.9697 18.7803L8 13.8107V12.5H10.5C11.4797 12.5 12.3131 11.8739 12.622 11H8V9.5H12.622C12.3131 8.62611 11.4797 8 10.5 8H8V6.5H16V8H13.5003Z">
+            </path>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+
+
+
+    <!-- Modal -->
+    <div id="profileModal" class="fixed hidden inset-0 flex items-center justify-center bg-gray-500 bg-opacity-60 px-5 z-10 ">
+      <div class="modal-content bg-white px-5 py-5 shadow rounded-md w-96 relative">
+        <span id="closeModal" class="mr-1 cursor-pointer absolute top-2 right-2 text-gray-600 hover:text-gray-900">X</span>
+        <p class="text-base font-bold ">Profile</p>
+
+        <div class="flex gap-5 py-5">
+          <div class="w-24 h-24 bg-gray-300 rounded-full outline outline-gray-300"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-24 h-24 mt-3 overflow-hidden" fill="white">
+              <path d="M20 22H4V20C4 17.2386 6.23858 15 9 15H15C17.7614 15 20 17.2386 20 20V22ZM12 13C8.68629 13 6 10.3137 6 7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7C18 10.3137 15.3137 13 12 13Z"></path>
+            </svg>
+          </div>
+
+          <div>
+            <h3 class="username text-xl mb-2"></h3>
+
+            <button id="signoutBtn" class="signoutbtn bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600 transition duration-200">
+              Sign Out
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Contact Me Section -->
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold mb-2">Contact Me</h2>
+          <p class="text-gray-700">Email: <a href="mailto:999rajivmishra@gmail.com" class="text-blue-500 underline">Send an Email</a></p>
+        </div>
+
+        <!-- Mail Section -->
+
+        <!-- Feedback Section -->
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Feedback</h2>
+          <form id="feedbackForm">
+            <textarea class="w-full border border-gray-300 rounded p-2 mb-4" placeholder="Your feedback..." required></textarea>
+            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">
+              Submit Feedback
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="logo px-5 bg-gray-200 pt-5">
+      <div class="flex">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 text-amber-500" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.0049 22H4.00488C3.4526 22 3.00488 21.5523 3.00488 21V3C3.00488 2.44772 3.4526 2 4.00488 2H20.0049C20.5572 2 21.0049 2.44772 21.0049 3V21C21.0049 21.5523 20.5572 22 20.0049 22ZM9.00488 6H7.00488V8C7.00488 10.7614 9.24346 13 12.0049 13C14.7663 13 17.0049 10.7614 17.0049 8V6H15.0049V8C15.0049 9.65685 13.6617 11 12.0049 11C10.348 11 9.00488 9.65685 9.00488 8V6Z"></path>
+        </svg>
+        <h1 class="text-xl ">BILL.EZ</h1>
+      </div>
+    </div>
+
+
+
+    <!--searchSection-->
+    <section class="w-full bg-gray-200 py-5">
+      <div class="flex items-center justify-center max-w-[650px] relative mx-auto px-4">
+        <input type="search" placeholder="Search..." class="searchInput pl-4 pr-4 relative py-2 border-2 bg-white border-zinc-300 focus:outline-zinc-400 rounded-xl w-full h-12" />
+        <div class="searchListShowArea hidden bg-white w-[92%] absolute z-[9] max-h-[300px] whitespace-nowrap overflow-auto scrollbar-hide rounded-xl top-0 px-5 mt-12 shadow">
+        </div>
+      </div>
+    </section>
+
+
+
+    <!--Select a catagory-->
+    <section class="w-full bg-gray-200 py-2">
+      <div class="max-w-[650px] mx-auto ">
+        <h2 class="text-center text-2xl text-bold ">Select a Catagory</h2>
+
+        <div class="previewSection categories bg-gray-200 py-5 flex items-center gap-5 whitespace-nowrap overflow-auto scrollbar-hide px-5">
+
+          <div class="">
+            <div class="w-[100px] bg-gray-600 h-[100px] overflow-hidden rounded-full text-center transform active:scale-95 transition-transform duration-200">
+              <img data-product="sparklers" class="category w-full h-full object-cover" src="products/sparklers/main.jpg" alt="">
+            </div>
+            <h5 class="mt-5 text-center">Sparklers</h5>
+          </div>
+
+          <div class="">
+            <div class="w-[100px] bg-gray-600 h-[100px] overflow-hidden rounded-full text-center transform active:scale-95 transition-transform duration-200">
+              <img data-product="chakri" class="category w-full h-full object-cover" src="products/chakri/main1.jpg" alt="">
+            </div>
+            <h5 class="mt-5 text-center">Chakri</h5>
+          </div>
+
+          <div class="">
+            <div class="w-[100px] bg-gray-600 h-[100px] overflow-hidden rounded-full text-center transform active:scale-95 transition-transform duration-200">
+              <img data-product="kothi" class="category w-full h-full object-cover" src="products/kothi/main.jpg" alt="">
+            </div>
+            <h5 class="mt-5 text-center">Kothi</h5>
+          </div>
+
+
+          <div class="">
+            <div class="w-[100px] bg-gray-600 h-[100px] overflow-hidden rounded-full text-center transform active:scale-95 transition-transform duration-200">
+              <img data-product="bomb" class="category w-full h-full object-cover" src="products/bomb/main.jpg" alt="">
+            </div>
+            <h5 class="mt-5 text-center">Bomb</h5>
+          </div>
+
+
+          <div class="">
+            <div class="w-[100px] bg-gray-600 h-[100px] overflow-hidden rounded-full text-center transform active:scale-95 transition-transform duration-200">
+              <img data-product="shots" class="category w-full h-full object-cover" src="products/shots/main.jpg" alt="">
+            </div>
+            <h5 class="mt-5 text-center">shots</h5>
+          </div>
+
+
+          <div class="">
+            <div class="w-[100px] bg-gray-600 h-[100px] overflow-hidden rounded-full text-center transform active:scale-95 transition-transform duration-200">
+              <img data-product="kids" class="category w-full h-full object-cover" src="products/kids/main.jpg" alt="">
+            </div>
+            <h5 class="mt-5 text-center">Kids</h5>
+          </div>
+          
+           <div class="">
+            <div class="w-[100px] bg-gray-600 h-[100px] overflow-hidden rounded-full text-center transform active:scale-95 transition-transform duration-200">
+              <img data-product="laar" class="category w-full h-full object-cover" src="products/laar/paperbomb.jpg" alt="">
+            </div>
+            <h5 class="mt-5 text-center">Paper bomb</h5>
+          </div>
+          
+          <div class="">
+            <div class="w-[100px] bg-gray-600 h-[100px] overflow-hidden rounded-full text-center transform active:scale-95 transition-transform duration-200">
+              <img data-product="laarbig" class="category w-full h-full object-cover" src="products/laar/main.jpg" alt="">
+            </div>
+            <h5 class="mt-5 text-center">Laar</h5>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!--Subcatagry-->
+    <section class="w-full bg-gray-200 ">
+      <div class="flex items-center justify-between max-w-[650px] mx-auto ">
+        <div class="previewSection cardProducts whitespace-nowrap flex space-x-6 overflow-auto pb-4 px-5 scrollbar-hide">
+
+
+
+          <div class="bg-white rounded-lg shadow-lg w-[255px] flex-shrink-0">
+            <img src="${item.imageUrl}" alt="Product 1" class="w-full h-56 object-cover rounded-t-lg">
+            <div class="mt-2 flex text-wrap  flex-col px-2">
+              <div class=" px-1 bg-white w-full">
+                <h4 class="w-full text-gray-700 text-base leading-tight">${item.name}</h4>
+                <div class="flex justify-between mt-2 ">
+                  <h2 class="text-gray-700">₹<span class="text-green-600 text-2xl">50</span></h2>
+                  <div class="quantityDiv flex justify-around items-center">
+                    <span class="minusQuantity px-4 py-1 rounded-xl bg-gray-200">-</span><span class="quantity text-center w-10 text-lg"> 01 </span><span class="plusQuantity px-4 rounded-xl bg-gray-200 py-1 ">+</span>
+                  </div>
+                </div>
+              </div>
+              <button class="my-2 cardInfo bg-gradient-to-r from-orange-400 to-amber-400  px-2 py-2 rounded-lg w-full text-center " data-product="${item.name}" data-price="${item.price}" data-url="${item.imageUrl}" type="button">Add Item</button>
+
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+      </div>
+    </section>
+
+
+
+
+    <!--lists order-->
+    <div class="ordersDiv  w-full bg-gray-200 pt-9">
+      <div class="flex justify-between items-center px-5 max-w-[630px] mx-auto">
+        <h3 class="text-2xl font-semibold">Orders :</h3>
+        <div class="flex gap-5">
+          <h6 class="sortQuantity flex hover:text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="w-[20px] " viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.0001 7.82843V20H11.0001V7.82843L5.63614 13.1924L4.22192 11.7782L12.0001 4L19.7783 11.7782L18.3641 13.1924L13.0001 7.82843Z"></path>
+            </svg>Qunatity</h6>
+          <h6 class="sortPrice flex hover:text-gray-700"><svg xmlns="http://www.w3.org/2000/svg" class="w-[20px]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.0001 7.82843V20H11.0001V7.82843L5.63614 13.1924L4.22192 11.7782L12.0001 4L19.7783 11.7782L18.3641 13.1924L13.0001 7.82843Z"></path>
+            </svg>Price</h6>
+        </div>
+      </div>
+
+      <!--orderlists here-->
+      <div id="content" class="showOrderLists  px-2 py-2">
+
+
+      </div>
+    </div>
+
+    <div class="bg-gray-200 w-full">
+      <div class="buttonsDynamic hidden  max-w-[630px] mx-auto">
+        <div class="buttons flex justify-center  gap-2 px-5 mx-auto">
+          <button class="clearButton shadow rounded-xl w-[180px] bg-zinc-300 px-5" type="reset">Clear All</button>
+          <button class="addHistoryBtn shadow rounded-xl w-[180px] bg-gradient-to-r from-orange-400 to-amber-400 hover:to-orange-400 px-5 py-3" type="submit">Add History</button>
+        </div>
+      </div>
+      <h2 class="message text-center text-gray-600 pt-[100px]"> </h2>
+    </div>
+
+
+    <!--faqs-->
+    <!-- component -->
+
+    
+    
+    
+    
+    
+    <!-- component -->
+    <div class="max-w-screen-xl mx-auto px-5 bg-gray-200 min-h-sceen bg-white  pt-16">
+      <div class="flex flex-col items-center">
+        <h2 class="font-bold text-5xl mt-5 tracking-tight">
+          FAQ
+        </h2>
+        <p class="text-neutral-500 text-xl mt-3">
+          Frequenty asked questions
+        </p>
+      </div>
+      <div class="grid divide-y divide-neutral-200 max-w-xl mx-auto mt-8 ">
+        <div class="py-5">
+          <details class="group">
+            <summary class="flex justify-between items-center font-medium cursor-pointer list-none">
+              <span> Can't find few products?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-neutral-600 mt-3 group-open:animate-fadeIn">use Search! 
+              even though we have catagorized every product finding some can be hard, thats where Search feature comes into work, Use the Search feature above and search by Product Name or Product Code.
+            </p>
+          </details>
+        </div>
+        <div class="py-5">
+          <details class="group">
+            <summary class="flex justify-between items-center font-medium cursor-pointer list-none">
+              <span> How does companys privacy work?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-neutral-600 mt-3 group-open:animate-fadeIn">
+              We have provided reliable sigin and authentication process for our customers for secure login and logout, So there should not be any doubt about that even if anything goes wrong contact us and we will resolve the issue within few days.
+            </p>
+          </details>
+        </div>
+        <div class="py-5">
+          <details class="group">
+            <summary class="flex justify-between items-center font-medium cursor-pointer list-none">
+              <span>Where is my History saved?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-neutral-600 mt-3 group-open:animate-fadeIn">
+              we have History page where each and every order will be listed with details, also with QR code to recive payment and
+              have used Firebase Cloud Storage to store the data securely,
+            </p>
+          </details>
+        </div>
+        <div class="py-5">
+          <details class="group">
+            <summary class="flex justify-between items-center font-medium cursor-pointer list-none">
+              <span> Is this platform free lifetime?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-neutral-600 mt-3 group-open:animate-fadeIn">
+              We offers a free and limited features of this platform for a limited time. Also,
+              there will be few paid feature to use in near future.
+              still this free plan will be sufficient for most of the task.
+            </p>
+          </details>
+        </div>
+        <div class="py-5">
+          <details class="group">
+            <summary class="flex justify-between items-center font-medium cursor-pointer list-none">
+              <span> How do I contact support?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-neutral-600 mt-3 group-open:animate-fadeIn">
+              If you need help with the platform or have any other questions, you can contact the
+              company's support team by submitting a support request through the website or by emailing -
+              999rajivmishra@gmail.com.
+            </p>
+          </details>
+        </div>
+        <div class="py-5 mb-16">
+          <details class="group">
+            <summary class="flex justify-between items-center font-medium cursor-pointer list-none">
+              <span>What are the payment options ?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="text-neutral-600 mt-3 group-open:animate-fadeIn">
+              We offer QR code to pay at the time of adding history, So the user can easily process upi payments,it accepts all types of upi payements app and gateways.
+            </p>
+          </details>
+        </div>
+      </div>
+    </div>
+    
+    <!--
+    <footer class=" font-sans dark:bg-gray-900">
+    <div class="container px-6 py-12 mx-auto">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
+            <div class="sm:col-span-2">
+                <h1 class="max-w-lg text-xl font-semibold tracking-tight text-gray-800 xl:text-2xl dark:text-white">Subscribe our newsletter to get an update.</h1>
+                <div class="flex flex-col mx-auto mt-6 space-y-3 md:space-y-0 md:flex-row">
+                    <input id="email" type="text" class="px-4 py-2 text-gray-700 bg-white border rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300" placeholder="Email Address" />
+                    <button class="w-full px-6 py-2.5 text-sm font-medium tracking-wider text-white transition-colors duration-300 transform md:w-auto md:mx-4 focus:outline-none bg-gray-800 rounded-lg hover:bg-gray-700 focus:ring focus:ring-gray-300 focus:ring-opacity-80">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer> -->
+
+
+
+
+
+
+
+
+
+
+    <!--modal-->
+    <div class="modalAddHistory hidden relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      <!--
+    Background backdrop, show/hide based on modal state.
+
+    Entering: "ease-out duration-300"
+      From: "opacity-0"
+      To: "opacity-100"
+    Leaving: "ease-in duration-200"
+      From: "opacity-100"
+      To: "opacity-0"
+  -->
+      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+      <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+
+          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div class="flex justify-end px-2">
+              <button class="closeModal px-2 pt-2" type="button">X</button>
+            </div>
+            <div class="bg-white px-4 pt-2 sm:p-4 sm:pb-4">
+
+              <div class="s">
+               
+                
+                
+                <div class="qrdiv h-56 w-56  mx-auto">
+                  <img class="w-full h-full" src="brand/qr.png" alt="">
+                </div>
+                <!--
+                <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-10" fill="none" viewBox="0 0 24 24" id="Task-List-Check--Streamline-Ultimate" height="24" width="24">
+                    <desc>Task List Check Streamline Icon: https://streamlinehq.com</desc>
+                    <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="m16.313 11.2598 -5.592 5.592c-0.076 0.0761 -0.1662 0.1365 -0.2656 0.1778 -0.0993 0.0412 -0.2059 0.0624 -0.3134 0.0624 -0.1076 0 -0.21408 -0.0212 -0.31343 -0.0624 -0.09935 -0.0413 -0.1896 -0.1017 -0.26558 -0.1778l-1.875 -1.876" stroke-width="1.5"></path>
+                    <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M15.75 4.5h3.75c0.3978 0 0.7794 0.15804 1.0607 0.43934S21 5.60218 21 6v15.75c0 0.3978 -0.158 0.7794 -0.4393 1.0607s-0.6629 0.4393 -1.0607 0.4393h-15c-0.39782 0 -0.77936 -0.158 -1.06066 -0.4393C3.15804 22.5294 3 22.1478 3 21.75V6c0 -0.39782 0.15804 -0.77936 0.43934 -1.06066C3.72064 4.65804 4.10218 4.5 4.5 4.5h3.75c0 -0.99456 0.39509 -1.94839 1.09835 -2.65165C10.0516 1.14509 11.0054 0.75 12 0.75c0.9946 0 1.9484 0.39509 2.6517 1.09835C15.3549 2.55161 15.75 3.50544 15.75 4.5Z" stroke-width="1.5"></path>
+                    <path stroke="#000000" d="M11.9995 4.51074c-0.2071 0 -0.375 -0.16789 -0.375 -0.375s0.1679 -0.375 0.375 -0.375" stroke-width="1.5"></path>
+                    <path stroke="#000000" d="M11.9995 4.51074c0.2071 0 0.375 -0.16789 0.375 -0.375s-0.1679 -0.375 -0.375 -0.375" stroke-width="1.5"></path>
+                  </svg>
+                </div>
+      -->
+
+                <div class="mt-2 text-center ">
+                  <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">scan & pay</h3>
+                  <div class="mt-2">
+                    <input class="nameInput outline-gray-500 mt-2 w-full px-2 py-2 outline rounded-md" placeholder="name (optional)" type="text">
+                    <input class="phoneInput outline-gray-500 mt-2 w-full px-2 py-2 outline rounded-md" placeholder="phone number (optional)" type="number">
+                    <input class="emailInput outline-gray-500 mt-2 w-full px-2 py-2 outline rounded-md" placeholder="email (optional)" type="email">
+
+                    <p class="mt-2 text-sm text-gray-500">Filling the details is optional but recommended!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:flex justify-center ">
+              <button type="button" class="downloadPdfAndAddHistoryBtn  inline-flex w-full justify-center rounded-md bg-gray-600 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">skip & addHistory</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <!--getdata btn
+    <div class="flex justify-center bg-gray-200">
+      <button class="getDatabtn px-5 py-3 bg-gray-400 mb-10">Get data</button>
+    </div>
+    <div id="ordersList"></div>
+
+
+    </div>
+<div class="h-[100px] bg-yellow-100">
+  
+</div>-->
+
+
+    <!-- component -->
+    <div class="flex flex-col  bg-gray-200 ">
+      <div class="w-full draggable">
+        <div class="container flex flex-col mx-auto">
+          <div class="flex flex-col items-center w-full my-20">
+            <span class="mb-8">
+
+            </span>
+            <div class="flex flex-col items-center gap-6 mb-8">
+              <div class="flex flex-wrap items-center justify-center gap-5 lg:gap-12 gap-y-3 lg:flex-nowrap text-dark-grey-900">
+                <a href="javascript:void(0)" class="text-gray-600 hover:text-gray-900">About</a>
+                <a href="javascript:void(0)" class="text-gray-600 hover:text-gray-900">Features</a>
+                <a href="javascript:void(0)" class="text-gray-600 hover:text-gray-900">Blog</a>
+                <a href="javascript:void(0)" class="text-gray-600 hover:text-gray-900">Resources</a>
+                <a href="javascript:void(0)" class="text-gray-600 hover:text-gray-900">Partners</a>
+                <a href="javascript:void(0)" class="text-gray-600 hover:text-gray-900">Help</a>
+                <a href="javascript:void(0)" class="text-gray-600 hover:text-gray-900">Terms</a>
+              </div>
+              <div class="flex items-center gap-8">
+                <a href="javascript:void(0)" class="text-grey-700 hover:text-grey-900">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.6348 20.7273V12.766H16.3582L16.7668 9.66246H13.6348V7.68128C13.6348 6.78301 13.8881 6.17085 15.2029 6.17085L16.877 6.17017V3.39424C16.5875 3.35733 15.5937 3.27273 14.437 3.27273C12.0216 3.27273 10.368 4.71881 10.368 7.37391V9.66246H7.63636V12.766H10.368V20.7273H13.6348Z" fill="currentColor" />
+                    <mask id="mask0_3320_6483" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="7" y="3" width="10" height="18">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M13.6348 20.7273V12.766H16.3582L16.7668 9.66246H13.6348V7.68128C13.6348 6.78301 13.8881 6.17085 15.2029 6.17085L16.877 6.17017V3.39424C16.5875 3.35733 15.5937 3.27273 14.437 3.27273C12.0216 3.27273 10.368 4.71881 10.368 7.37391V9.66246H7.63636V12.766H10.368V20.7273H13.6348Z" fill="white" />
+                    </mask>
+                    <g mask="url(#mask0_3320_6483)">
+                    </g>
+                  </svg>
+                </a>
+                <a href="javascript:void(0)" class="text-grey-700 hover:text-grey-900">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M21.8182 6.14597C21.1356 6.44842 20.4032 6.65355 19.6337 6.74512C20.4194 6.27461 21.0208 5.5283 21.3059 4.64176C20.5689 5.07748 19.7553 5.39388 18.8885 5.56539C18.1943 4.82488 17.207 4.36364 16.1118 4.36364C14.0108 4.36364 12.3072 6.06718 12.3072 8.16706C12.3072 8.46488 12.3408 8.75576 12.4058 9.03391C9.24436 8.87512 6.44106 7.36048 4.56485 5.05894C4.23688 5.61985 4.0503 6.27342 4.0503 6.97109C4.0503 8.29106 4.72246 9.45573 5.74227 10.1371C5.11879 10.1163 4.53239 9.94476 4.01903 9.65967V9.70718C4.01903 11.5498 5.33088 13.0876 7.07033 13.4376C6.75164 13.5234 6.41558 13.5709 6.06791 13.5709C5.82224 13.5709 5.58467 13.5465 5.35173 13.5002C5.83612 15.0125 7.2407 16.1123 8.90485 16.1424C7.60343 17.1622 5.96246 17.7683 4.18012 17.7683C3.87303 17.7683 3.57055 17.7498 3.27273 17.7162C4.95658 18.7974 6.95564 19.4278 9.10418 19.4278C16.1026 19.4278 19.9281 13.6312 19.9281 8.60397L19.9153 8.11145C20.6628 7.57833 21.3094 6.90851 21.8182 6.14597Z" fill="currentColor" />
+                    <mask id="mask0_3320_6484" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="3" y="4" width="19" height="16">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M21.8182 6.14597C21.1356 6.44842 20.4032 6.65355 19.6337 6.74512C20.4194 6.27461 21.0208 5.5283 21.3059 4.64176C20.5689 5.07748 19.7553 5.39388 18.8885 5.56539C18.1943 4.82488 17.207 4.36364 16.1118 4.36364C14.0108 4.36364 12.3072 6.06718 12.3072 8.16706C12.3072 8.46488 12.3408 8.75576 12.4058 9.03391C9.24436 8.87512 6.44106 7.36048 4.56485 5.05894C4.23688 5.61985 4.0503 6.27342 4.0503 6.97109C4.0503 8.29106 4.72246 9.45573 5.74227 10.1371C5.11879 10.1163 4.53239 9.94476 4.01903 9.65967V9.70718C4.01903 11.5498 5.33088 13.0876 7.07033 13.4376C6.75164 13.5234 6.41558 13.5709 6.06791 13.5709C5.82224 13.5709 5.58467 13.5465 5.35173 13.5002C5.83612 15.0125 7.2407 16.1123 8.90485 16.1424C7.60343 17.1622 5.96246 17.7683 4.18012 17.7683C3.87303 17.7683 3.57055 17.7498 3.27273 17.7162C4.95658 18.7974 6.95564 19.4278 9.10418 19.4278C16.1026 19.4278 19.9281 13.6312 19.9281 8.60397L19.9153 8.11145C20.6628 7.57833 21.3094 6.90851 21.8182 6.14597Z" fill="white" />
+                    </mask>
+                    <g mask="url(#mask0_3320_6484)">
+                    </g>
+                  </svg>
+                </a>
+                <a href="javascript:void(0)" class="text-grey-700 hover:text-grey-900">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3C7.0275 3 3 7.13211 3 12.2284C3 16.3065 5.5785 19.7648 9.15375 20.9841C9.60375 21.0709 9.76875 20.7853 9.76875 20.5403C9.76875 20.3212 9.76125 19.7405 9.7575 18.9712C7.254 19.5277 6.726 17.7332 6.726 17.7332C6.3165 16.6681 5.72475 16.3832 5.72475 16.3832C4.9095 15.8111 5.78775 15.8229 5.78775 15.8229C6.6915 15.887 7.16625 16.7737 7.16625 16.7737C7.96875 18.1847 9.273 17.777 9.7875 17.5414C9.8685 16.9443 10.1003 16.5381 10.3575 16.3073C8.35875 16.0764 6.258 15.2829 6.258 11.7471C6.258 10.7399 6.60675 9.91659 7.18425 9.27095C7.083 9.03774 6.77925 8.0994 7.263 6.82846C7.263 6.82846 8.01675 6.58116 9.738 7.77462C10.458 7.56958 11.223 7.46785 11.988 7.46315C12.753 7.46785 13.518 7.56958 14.238 7.77462C15.948 6.58116 16.7017 6.82846 16.7017 6.82846C17.1855 8.0994 16.8818 9.03774 16.7917 9.27095C17.3655 9.91659 17.7142 10.7399 17.7142 11.7471C17.7142 15.2923 15.6105 16.0725 13.608 16.2995C13.923 16.5765 14.2155 17.1423 14.2155 18.0071C14.2155 19.242 14.2043 20.2344 14.2043 20.5341C14.2043 20.7759 14.3617 21.0647 14.823 20.9723C18.4237 19.7609 21 16.3002 21 12.2284C21 7.13211 16.9703 3 12 3Z" fill="currentColor" />
+                  </svg>
+                </a>
+                <a href="javascript:void(0)" class="text-grey-700 hover:text-grey-900">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M16.2 0H1.8C0.81 0 0 0.81 0 1.8V16.2C0 17.19 0.81 18 1.8 18H16.2C17.19 18 18 17.19 18 16.2V1.8C18 0.81 17.19 0 16.2 0ZM5.4 15.3H2.7V7.2H5.4V15.3ZM4.05 5.67C3.15 5.67 2.43 4.95 2.43 4.05C2.43 3.15 3.15 2.43 4.05 2.43C4.95 2.43 5.67 3.15 5.67 4.05C5.67 4.95 4.95 5.67 4.05 5.67ZM15.3 15.3H12.6V10.53C12.6 9.81004 11.97 9.18 11.25 9.18C10.53 9.18 9.9 9.81004 9.9 10.53V15.3H7.2V7.2H9.9V8.28C10.35 7.56 11.34 7.02 12.15 7.02C13.86 7.02 15.3 8.46 15.3 10.17V15.3Z" fill="currentColor" />
+                  </svg>
+                </a>
+                <a href="javascript:void(0)" class="text-grey-700 hover:text-grey-900">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.60063 2.18182H16.3991C19.3873 2.18182 21.8183 4.61281 21.8182 7.60074V16.3993C21.8182 19.3872 19.3873 21.8182 16.3991 21.8182H7.60063C4.6127 21.8182 2.18182 19.3873 2.18182 16.3993V7.60074C2.18182 4.61281 4.6127 2.18182 7.60063 2.18182ZM16.3993 20.0759C18.4266 20.0759 20.0761 18.4266 20.0761 16.3993H20.0759V7.60074C20.0759 5.57348 18.4265 3.92405 16.3991 3.92405H7.60063C5.57336 3.92405 3.92405 5.57348 3.92405 7.60074V16.3993C3.92405 18.4266 5.57336 20.0761 7.60063 20.0759H16.3993ZM6.85714 12.0001C6.85714 9.16424 9.16418 6.85714 12 6.85714C14.8358 6.85714 17.1429 9.16424 17.1429 12.0001C17.1429 14.8359 14.8358 17.1429 12 17.1429C9.16418 17.1429 6.85714 14.8359 6.85714 12.0001ZM8.62798 12C8.62798 13.8593 10.1407 15.3719 12 15.3719C13.8593 15.3719 15.372 13.8593 15.372 12C15.372 10.1406 13.8594 8.6279 12 8.6279C10.1406 8.6279 8.62798 10.1406 8.62798 12Z" fill="currentColor" />
+                    <mask id="mask0_3320_6487" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="2" y="2" width="20" height="20">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M7.60063 2.18182H16.3991C19.3873 2.18182 21.8183 4.61281 21.8182 7.60074V16.3993C21.8182 19.3872 19.3873 21.8182 16.3991 21.8182H7.60063C4.6127 21.8182 2.18182 19.3873 2.18182 16.3993V7.60074C2.18182 4.61281 4.6127 2.18182 7.60063 2.18182ZM16.3993 20.0759C18.4266 20.0759 20.0761 18.4266 20.0761 16.3993H20.0759V7.60074C20.0759 5.57348 18.4265 3.92405 16.3991 3.92405H7.60063C5.57336 3.92405 3.92405 5.57348 3.92405 7.60074V16.3993C3.92405 18.4266 5.57336 20.0761 7.60063 20.0759H16.3993ZM6.85714 12.0001C6.85714 9.16424 9.16418 6.85714 12 6.85714C14.8358 6.85714 17.1429 9.16424 17.1429 12.0001C17.1429 14.8359 14.8358 17.1429 12 17.1429C9.16418 17.1429 6.85714 14.8359 6.85714 12.0001ZM8.62798 12C8.62798 13.8593 10.1407 15.3719 12 15.3719C13.8593 15.3719 15.372 13.8593 15.372 12C15.372 10.1406 13.8594 8.6279 12 8.6279C10.1406 8.6279 8.62798 10.1406 8.62798 12Z" fill="white" />
+                    </mask>
+                    <g mask="url(#mask0_3320_6487)">
+                    </g>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <p class="text-base font-normal leading-7 text-center text-grey-700">
+                2024 bill.ez, All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!--menu-->
+    <div class="sticky bottom-0 h-[55px] w-full bg-white py-2 shadow ">
+      <div class="flex gap-2 justify-between items-center max-w-[650px] px-10 mx-auto">
+        <div id="profileIcon" class="settingPage">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-10" viewBox="0 0 24 24" id="Single-Neutral-Circle--Streamline-Ultimate" height="24" width="24">
+            <desc>Single Neutral Circle Streamline Icon: https://streamlinehq.com</desc>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M0.75 12c0 2.9837 1.18526 5.8452 3.29505 7.955C6.15483 22.0647 9.01631 23.25 12 23.25c2.9837 0 5.8452 -1.1853 7.955 -3.295 2.1097 -2.1098 3.295 -4.9713 3.295 -7.955 0 -2.98369 -1.1853 -5.84517 -3.295 -7.95495C17.8452 1.93526 14.9837 0.75 12 0.75c-2.98369 0 -5.84517 1.18526 -7.95495 3.29505C1.93526 6.15483 0.75 9.01631 0.75 12Z" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M9.75 6c0 0.59674 0.23705 1.16903 0.659 1.59099 0.422 0.42196 0.9943 0.65901 1.591 0.65901s1.169 -0.23705 1.591 -0.65901c0.4219 -0.42196 0.659 -0.99425 0.659 -1.59099 0 -0.59674 -0.2371 -1.16903 -0.659 -1.59099C13.169 3.98705 12.5967 3.75 12 3.75s-1.169 0.23705 -1.591 0.65901C9.98705 4.83097 9.75 5.40326 9.75 6Z" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="m13.5 20.25 0.75 -4.5h1.5V13.5c0 -0.9946 -0.3951 -1.9484 -1.0983 -2.6517C13.9484 10.1451 12.9946 9.75 12 9.75c-0.9946 0 -1.9484 0.3951 -2.65165 1.0983C8.64509 11.5516 8.25 12.5054 8.25 13.5v2.25h1.5l0.75 4.5h3Z" stroke-width="1.5"></path>
+          </svg>
+        </div>
+        <div class="homePage">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-10" fill="gray" viewBox="0 0 24 24" id="House-1--Streamline-Ultimate" height="24" width="24">
+            <desc>House 1 Streamline Icon: https://streamlinehq.com</desc>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M3.75299 13.944v8.25h6v-6c0 -0.3979 0.15804 -0.7794 0.43931 -1.0607 0.2813 -0.2813 0.6629 -0.4393 1.0607 -0.4393h1.5c0.3978 0 0.7793 0.158 1.0607 0.4393 0.2813 0.2813 0.4393 0.6628 0.4393 1.0607v6h6v-8.25" stroke-width="1.5"></path>
+            <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M0.752991 12.444 10.942 2.25499c0.1393 -0.13939 0.3047 -0.24997 0.4867 -0.32541 0.1821 -0.07544 0.3772 -0.11427 0.5743 -0.11427 0.1971 0 0.3922 0.03883 0.5742 0.11427 0.1821 0.07544 0.3475 0.18602 0.4868 0.32541L23.253 12.444" stroke-width="1.5"></path>
+          </svg>
+        </div>
+        <div class="historyPage">
+          <a href="history.html">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-10" viewBox="0 0 24 24" id="Notes-Checklist-Flip--Streamline-Ultimate" height="24" width="24">
+              <desc>Notes Checklist Flip Streamline Icon: https://streamlinehq.com</desc>
+              <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M2.25 2.25h19.5s1.5 0 1.5 1.5v18s0 1.5 -1.5 1.5H2.25s-1.5 0 -1.5 -1.5v-18s0 -1.5 1.5 -1.5Z" stroke-width="1.5"></path>
+              <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M5.25 0.75v3" stroke-width="1.5"></path>
+              <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M18.75 0.75v3" stroke-width="1.5"></path>
+              <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M12.75 18h4.5" stroke-width="1.5"></path>
+              <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M12.75 10.5h4.5" stroke-width="1.5"></path>
+              <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="m9.9 15.3 -3.15 4.2 -2.25 -2.25" stroke-width="1.5"></path>
+              <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="m9.9 7.5 -3.15 4.2L4.5 9.45" stroke-width="1.5"></path>
+            </svg></a>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+    <script src="script.js" type="module"></script>
+    <script>
+      const profileIcon = document.getElementById('profileIcon');
+      const profileModal = document.getElementById('profileModal');
+      const closeModal = document.getElementById('closeModal');
+
+      // Open Modal
+      profileIcon.addEventListener('click', () => {
+        profileModal.style.display = 'flex';
+      });
+
+      // Close Modal
+      closeModal.addEventListener('click', () => {
+        profileModal.style.display = 'none';
+      });
+
+      document.querySelector('.username').innerHTML = localStorage.userEmail
+
+
+
+
+      document.getElementById('feedbackForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const feedback = e.target.elements[0].value; // Get feedback text
+        localStorage.setItem("feedback", feedback)
+        // Handle feedback submission logic here (e.g., store in database or send via email)
+        console.log('Feedback submitted:', feedback);
+        alert('Thank you for your feedback!');
+        e.target.reset(); // Clear the form
+      });
+      console.log(localStorage.getItem('user'))
+    </script>
+
+</body>
+
+</body>
+
+</html>
