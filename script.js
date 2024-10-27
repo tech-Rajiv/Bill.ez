@@ -199,7 +199,7 @@ cardProducts.addEventListener("click", (e) => {
   if (e.target.tagName == "BUTTON") {
     e.target.innerHTML = `<div class="flex gap-2 justify-center" ><svg class="" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" id="Check--Streamline-Sharp" height="20" width="20"><desc>Check Streamline Icon: https://streamlinehq.com</desc><g id="check--check-form-validation-checkmark-success-add-addition-tick"><path id="Vector 2356 (Stroke)" fill="#000000" fill-rule="evenodd" d="M23.914 6.914 8.5 22.328 0.086 13.914l2.828 -2.828L8.5 16.672 21.086 4.086l2.828 2.828Z" clip-rule="evenodd" stroke-width="1"></path></g></svg>added</div>`
     setTimeout(() => {
-      e.target.innerHTML = "Add Item"
+      e.target.innerHTML = "Add To Cart"
     }, 800)
 
     const quantity = Number(quantityDiv.innerHTML)
@@ -360,6 +360,7 @@ document.querySelector('.clearButton').addEventListener("click", () => {
 //addhistorymodal show
 document.querySelector('.addHistoryBtn').addEventListener("click", () => {
   document.querySelector('.modalAddHistory').style.display = "block";
+  document.querySelector('.priceTopay').innerHTML= amount;
   /*
   const qrdiv= document.querySelector('.qrdiv');
   qrdiv.innerHTML="";
