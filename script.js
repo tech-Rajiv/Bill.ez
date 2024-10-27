@@ -163,7 +163,7 @@ const showSubCatagory = (n) => {
               </div>
                </div>
               </div>
-                <button class="my-2 cardInfo bg-gradient-to-r from-orange-400 to-amber-400  px-2 py-2 rounded-lg w-full text-center "  data-product="${item.name}"  data-price="${item.price}" data-url="${item.imageUrl}" type="button">Add Item</button>
+                <button class="my-2 cardInfo bg-gradient-to-r from-orange-400 to-amber-400  px-2 py-2 rounded-lg w-full text-center "  data-product="${item.name}"  data-price="${item.price}" data-url="${item.imageUrl}" type="button">Add To Cart</button>
              
           </div>
         </div>`
