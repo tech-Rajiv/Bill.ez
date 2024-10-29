@@ -151,8 +151,13 @@ const showSubCatagory = (n) => {
   let temp = "";
   filteredArray.forEach(item => {
     temp += `<div class="bg-white rounded-lg shadow-lg w-[255px] flex-shrink-0">
-        <img src="${item.imageUrl}" alt="Product 1" class="w-full h-56 object-cover rounded-t-lg">
-        
+          <picture>
+  <source srcset="${item.imageUrl}" type="image/webp">
+  <source srcset="${item.imageUrl}" type="image/jpeg">
+  <img  class="w-full h-56 object-cover rounded-t-lg" src="${item.imageUrl}" srcset="large-image.jpg 1024w, medium-image.jpg 640w, small-image.jpg 320w" 
+  sizes="(max-width: 600px) 320px, (max-width: 1024px) 640px, 1024px"
+  alt="description">
+</picture>
             <div class="mt-2 flex text-wrap  flex-col px-2">
               <div class=" px-1 bg-white w-full">
                 <h4 class="w-full text-gray-700 text-base leading-tight">${item.name}</h4>
