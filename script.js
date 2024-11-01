@@ -56,6 +56,7 @@ const products = [
 { category: "shots", name: "7 shots aryan", price:300, imageUrl: "products/shots/7shots.jpg" },
 { category: "shots", name: "12 shots Skyworks Bentex", price:300, imageUrl: "products/shots/12shot.jpg" },
 { category: "shots", name: "fteen 15 shots simba", price:500, imageUrl: "products/shots/fteen.jpg" },
+{ category: "shots", name: "BhavikJi multi-clr 15shot", price:700, imageUrl: "products/shots/fteen.jpg" },
 { category: "shots", name: "20 shots Atlas blackberry", price:400, imageUrl: "products/shots/atlas.jpg" },
 { category: "shots", name: "25 shots Fantasia", price:550, imageUrl: "products/shots/fantasia.jpg" },
 { category: "shots", name: "TROY 25 shots", price:840, imageUrl: "products/shots/troy.jpg" },
