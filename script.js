@@ -487,7 +487,8 @@ async function addDatafunction(orderDetails) {
       console.error("Error saving order:", error);
     }
   } else {
-    console.log("No user signed in.");
+    alert("Order saved successfully!, but as a guest! please signin");
+    window.location.reload();
   }
 };
 
